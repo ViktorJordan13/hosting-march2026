@@ -1,0 +1,4 @@
+Potsetete se za naredniot cas:
+1. MongoDB, kako da se konektirate do clusterot na Atlas, Mongoose
+2. .env datotekata
+3. npm run seed
