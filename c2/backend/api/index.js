@@ -10,6 +10,9 @@ const app = express();
 // dozvoluvame bilo koj klient/frontend da go pristapi nasiot server/backend
 app.use(cors());
 
+// ni ovozmozuva da citame JSON od req.body (bez ova req.body e undefined kaj POST baranjata)
+app.use(express.json());
+
 const { MONGO_USERNAME, MONGO_PASSWORD, MONGO_CLUSTER, MONGO_DB} = process.env;
 
 //URI - Unique Resource Identifier

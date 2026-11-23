@@ -1,0 +1,9 @@
+Priprema za naredniot cas:
+
+1. Prikacete go ovoj proekt od Cas 2 (backend+frontend+Mongo) samo smenete go so vas cluster na vas Github account.
+
+2. Nparavete besplaten account na Vercel so vasiot GitHub profil (Logirajte se na vasiot GitHub accoun -> Continue with Github
+-> https://vercel.com/signup)
+    izberete "Hobby" (bezplaten plan).
+
+3. Proverete deka vasiot kod od Cas 2 raboti (Se povrzuva na vasiont MongoDB Atlas cluster, i kreira studenti)
