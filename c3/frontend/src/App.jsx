@@ -1,19 +1,30 @@
 import { useState, useEffect} from "react";
 
-// adresata na nasiot backend (vo tretiot cas ke ja smenime so Vercel adresata)
-const API_URL = "http://localhost:5005";
+// Lokalno: proxy-to na port 5005
+// Na Vercel: VITE_API_URL e adresata na nasiot backend (ja vnesuvame vo Vercel -> Environment Variables)
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5005"
 
-function App(){
+function Section({ title, endpoint}){
   const [data, setData] = useState([]);
   const [name, setName] = useState("");
+  const [error, setError] = useState("");
 
   const fetchData = async () => {
     try{
-      const res = await fetch(`${API_URL}/data`);
+      const res = await fetch(`${API_URL}/${endpoint}`);
       const resData = await res.json();
+
+      if(!res.ok){
+        setError(resData.message); // na pr, "Servisot ... ne e dostapen!"
+        setData([]);
+        return;
+      }
+
+      setError("");
       setData(resData);
     }catch(err) {
       console.log(err);
+      setError("Proxy-to ne e dostapen!");
     }
   };
 
@@ -24,7 +35,7 @@ function App(){
 
     try{
 
-      await fetch(`${API_URL}/data`,{
+      await fetch(`${API_URL}/${endpoint}`,{
         method: "POST",
         headers: { "Content-Type": "application/json"},
         body: JSON.stringify({name}),
@@ -44,8 +55,8 @@ function App(){
   }, []);
 
   return(
-    <>
-      <h1>Frontend + Backend + MongoDB (MERN)</h1>
+    <div>
+      <h2>{title}</h2>
 
       <form onSubmit={handleSubmit}>
         <input
@@ -54,16 +65,31 @@ function App(){
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
-        <button type="submit">Dodaj Student</button>
+        <button type="submit">Dodaj</button>
       </form>
+
+      {error && <p style={{color: "red"}}>{error}</p>}
 
       <div style={{ display: "flex", flexDirection: "column"}}>
           {data.map((d) => (
-            <span key={d.id}>{d.name}</span>
+            <span key={d._id}>{d.name}</span>
           ))}
       </div>
-    </>
+  </div>
   );
+}
+
+function App(){
+  return(
+    <>
+      <h1> MERN Microservices</h1>
+
+      <div style={{display: "flex", gap: "60px"}}>
+          <Section title="Studenti" endpoint="students" />
+          <Section title="Kursevi" endpoint="courses" />
+      </div>
+    </>
+  )
 }
 
 export default App;
